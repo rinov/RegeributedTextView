@@ -1,0 +1,6 @@
+framework module Pods_RegeributedTextView_Tests {
+  umbrella header "Pods-RegeributedTextView_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
