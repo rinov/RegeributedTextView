@@ -8,7 +8,7 @@
 
 `RegeributedTextView` is a subclass of `UITextView` that supports fully attribute string based on regular expression.
 
-[![DEMO](https://github.com/rinov/RegeributedTextView/Images/sample1.gif)](https://github.com/rinov/RegeributedTextView/Images/sample1.gif)
+[![DEMO](https://github.com/rinov/RegeributedTextView/blob/master/Images/sample1.gif)](https://github.com/rinov/RegeributedTextView/blob/master/Images/sample1.gif)
 
 ## Usage
 
@@ -18,7 +18,7 @@ import RegeributedTextView
 
 and you can use `RegeributedTextView` as subclass of `UITextView` in Interface Builder.
 
-[![InterfaceBuilder](https://github.com/rinov/RegeributedTextView/Images/interface-builder.png)](https://github.com/rinov/RegeributedTextView/Images/interface-builder.png)
+[![InterfaceBuilder](https://github.com/rinov/RegeributedTextView/blob/master/Images/interface-builder.png)](https://github.com/rinov/RegeributedTextView/blob/master/Images/interface-builder.png)
 
 It is simple to use an attribute string.
 
@@ -46,7 +46,7 @@ textView.addAttribute(.hashTag, attribute: .textColor(.blue)))
 | Attribute | Type |
 |:-----------|:------------|
 | backgroundColor     | UIColor        |
-| bold                |                |
+| bold                | -              |
 | boldWithFontSize    | CGFloat        |
 | font                | UIFont         |
 | fontName            | String         |
@@ -61,7 +61,7 @@ textView.addAttribute(.hashTag, attribute: .textColor(.blue)))
 | underline           | UnderlineStyle |
 | underlineColor      | UIColor        |
 
-## Linked text
+## Link text behavior
 
 In swift 3, The property `linkTextAttributes ` of `UITextView` can designate the link text behavior but it is not possible to coloring a few text separately in the same text.
 In this case, you can use attributes text based on regular expression like this.
@@ -69,11 +69,11 @@ In this case, you can use attributes text based on regular expression like this.
 e.g. Set text color separately.
 
 ```swift
-textView.addAttribute("@[a-zA-Z0-9]+\s", attributes: [.linkColor(.black), .bold], values: ["Type": "Mention"])
-textView.addAttribute("#[a-zA-Z0-9]+\s", attribute: .linkColor(.blue), values: ["Type": "HashTag"])
+textView.addAttribute("@[a-zA-Z0-9]+", attributes: [.textColor(.black), .bold], values: ["Type": "Mention"])
+textView.addAttribute("#[a-zA-Z0-9]+", attribute: .textColor(.blue), values: ["Type": "HashTag"])
 
 ```
-
+In `RegeributedTextView`, All attributed text can be detected for each word by tapping.
 and you can detect a tap event of link text by `RegeributedTextViewDelegate`.
 The arguments of `values` can embbed any values.
 
