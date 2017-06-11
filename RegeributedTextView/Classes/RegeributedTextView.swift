@@ -78,7 +78,7 @@ open class RegeributedTextView: UITextView {
     /*
     * `Priority` represents text attribute priority. You can use priority when adding an attribute if needed.
     * Rules:
-    * - The new attribute priority is greater or equal than the current attribute, it's overwriten.
+    * - The new attribute priority is greater than the current attribute, it's overwriten.
     * - The new attribute priority is less than the current attribute, it's ignored.
     * Default value is `medium`.
     */
