@@ -180,21 +180,21 @@ open class RegeributedTextView: UITextView {
     
     /* Add a new attribute to attributedText.
     * Properties:
-    * - regexStrong: Regular expression string or `RegexStringType`.
+    * - regexString: Regular expression string.
     * - attribute: A new text attribute
     * - value: An embedded value and you can detect the value if a user tapped the attributed text by delegate method.
     * - priority: An attribute priority. 
     * - applyingIndex: An applying element that you can specify.
     */
-    public func addAttribute(_ regexString: RegexStringConvertible, attribute: TextAttribute, value: [String: Any] = [:], priority: Priority = .medium, applyingIndex: ApplyingIndex = .all) {
-        let matched = text.matched(by: regexString.string)
+    public func addAttribute(_ regexString: String, attribute: TextAttribute, values: [String: Any] = [:], priority: Priority = .medium, applyingIndex: ApplyingIndex = .all) {
+        let matched = text.matched(by: regexString)
         guard !matched.isEmpty,
             let attributedString = attributedText.mutableCopied() else { return }
         arranged(matched, orderBy: applyingIndex).forEach { range in
             let overlapedAttributes = attributedRanges.enumerated().filter { $0.element.range.overlaps(range) }
             // Remove overlaped text attribute if the current attribute priority is less or equal than `priority`.
             overlapedAttributes
-                .filter { $0.element.priority <= priority }
+                .filter { $0.element.priority < priority }
                 .forEach { attribute in
                     attribute.element.attributeNames.forEach {
                         attributedString.removeAttribute($0, range: text.nsRange(from: attribute.element.range))
@@ -204,14 +204,18 @@ open class RegeributedTextView: UITextView {
             let higherAttributes = overlapedAttributes.filter { $0.element.priority > priority }
             if higherAttributes.isEmpty {
                 var attribute = attribute.attributedValue(font)
-                attribute[Constants.Meta.AttributeKey.rawValue] = value
+                attribute[Constants.Meta.AttributeKey.rawValue] = values
                 attributedString.addAttributes(attribute, range: text.nsRange(from: range))
                 attributedRanges.append(AttributedRange(attributeNames: attribute.keys.map{ String($0) }, priority: priority, range: range))
             }
         }
         attributedText = attributedString
     }
-    
+
+    public func addAttribute(_ regexType: RegexStringType, attribute: TextAttribute, values: [String: Any] = [:], priority: Priority = .medium, applyingIndex: ApplyingIndex = .all) {
+        addAttribute(regexType.rawValue, attribute: attribute, values: values, priority: priority, applyingIndex: applyingIndex)
+    }
+
     /* Add a new attributes to attributedText.
      * Properties:
      * - regexStrong: Regular expression string or `RegexStringType`.
@@ -220,9 +224,9 @@ open class RegeributedTextView: UITextView {
      * - priority: An attribute priority.
      * - applyingIndex: An applying element that you can specify.
      */
-    public func addAttributes(_ regexString: RegexStringConvertible, value: [String: Any] = [:], attributes: [TextAttribute], priority: Priority = .medium, applyingIndex: ApplyingIndex = .all) {
+    public func addAttributes(_ regexString: RegexStringConvertible, values: [String: Any] = [:], attributes: [TextAttribute], priority: Priority = .medium, applyingIndex: ApplyingIndex = .all) {
         attributes.forEach {
-            addAttribute(regexString.string, attribute: $0, value: value, priority: priority, applyingIndex: applyingIndex)
+            addAttribute(regexString.string, attribute: $0, values: values, priority: priority, applyingIndex: applyingIndex)
         }
     }
     
@@ -259,7 +263,7 @@ open class RegeributedTextView: UITextView {
         let location = sender.location(in: self)
         guard let index = closestPosition(to: location) else { return }
         let offset = self.offset(from: beginningOfDocument, to: index)
-        let attribute = attributedRanges.filter{ NSLocationInRange(offset, self.text.nsRange(from: $0.range)) }.sorted{ $0 > $1 }.first
+        let attribute = attributedRanges.filter { NSLocationInRange(offset, self.text.nsRange(from: $0.range)) }.sorted { $0 > $1 }.first
         guard let selectedRange = attribute?.range,
             let names = attribute?.attributeNames,
             let value = attributedText.attribute(at: offset, attributeNames: names) else { return }
@@ -314,26 +318,26 @@ fileprivate extension RegeributedTextView {
     func arranged(_ matches: [Range<String.Index>], orderBy: ApplyingIndex) -> [Range<String.Index>] {
         switch orderBy {
         case .first:
-            return matches.prefixed(1).map{$0}
+            return matches.prefixed(1).map { $0 }
         case .firstFrom(let n):
-            return matches.prefixed(n).map{ $0 }
+            return matches.prefixed(n).map { $0 }
         case .ignoreFirstFrom(let n):
-            return matches.dropFirst(n).map{ $0 }
+            return matches.dropFirst(n).map { $0 }
         case .last:
-            return matches.suffixed(1).map{ $0 }
+            return matches.suffixed(1).map { $0 }
         case .lastFrom(let n):
-            return matches.suffixed(n).map{ $0 }
+            return matches.suffixed(n).map { $0 }
         case .ignoreLastFrom(let n):
-            return matches.reversed().dropFirst(n).map{ $0 }
+            return matches.reversed().dropFirst(n).map { $0 }
         case .indexOf(let i):
             return i < matches.count && i >= 0 ? [matches[i]] : []
         case .ignoreIndexOf(let i):
-            return matches.enumerated().filter{ $0.offset != i }.map{ $0.element }
+            return matches.enumerated().filter { $0.offset != i }.map { $0.element }
         default:
             return matches
         }
     }
-    
+
 }
 
 fileprivate extension NSAttributedString {

@@ -1,25 +1,132 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="RegeributedTextView_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Hello, @here. #oss #swift #UITextView" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gMf-Aw-leD" customClass="RegeributedTextView" customModule="RegeributedTextView">
+                                <rect key="frame" x="0.0" y="217" width="375" height="100"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="CPl-b0-Qcg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="8CJ-4Q-Sik">
+                                <rect key="frame" x="0.0" y="317" width="375" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kev-8J-7gV">
+                                        <rect key="frame" x="0.0" y="0.0" width="125" height="30"/>
+                                        <state key="normal" title="Mention"/>
+                                        <connections>
+                                            <action selector="tappedMention:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="5Qc-V5-lRu"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gSj-7I-Ds3">
+                                        <rect key="frame" x="125" y="0.0" width="125" height="30"/>
+                                        <state key="normal" title="HashTag"/>
+                                        <connections>
+                                            <action selector="tappedHashTag:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="fcX-TI-hXQ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OXa-99-57E">
+                                        <rect key="frame" x="250" y="0.0" width="125" height="30"/>
+                                        <state key="normal" title="Underline"/>
+                                        <connections>
+                                            <action selector="tappedUnderline:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eZ8-Gh-v85"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="AXS-Gc-Dha">
+                                <rect key="frame" x="-2" y="417" width="379" height="31"/>
+                            </slider>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="35J-KS-I2q">
+                                <rect key="frame" x="0.0" y="367" width="375" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5JI-RA-GsH">
+                                        <rect key="frame" x="0.0" y="0.0" width="125" height="30"/>
+                                        <state key="normal" title="Bold"/>
+                                        <connections>
+                                            <action selector="tappedBold:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="LXV-7R-gtY"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fEN-bH-7ae">
+                                        <rect key="frame" x="125" y="0.0" width="125" height="30"/>
+                                        <state key="normal" title="FontName"/>
+                                        <connections>
+                                            <action selector="tappedFontName:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="mP9-Of-VvT"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ai-Qq-fHo">
+                                        <rect key="frame" x="250" y="0.0" width="125" height="30"/>
+                                        <state key="normal" title="Italic"/>
+                                        <connections>
+                                            <action selector="tappedItalic:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="qGf-gx-EkP"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJf-rS-K6W">
+                                <rect key="frame" x="277" y="28" width="82" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Clear"/>
+                                <connections>
+                                    <action selector="tappedClear:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="4tj-c0-yZX"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vkU-8P-yTl">
+                                <rect key="frame" x="31" y="31" width="238" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="35J-KS-I2q" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="0zv-ix-m1I"/>
+                            <constraint firstAttribute="trailing" secondItem="AXS-Gc-Dha" secondAttribute="trailing" id="E3t-0T-CvL"/>
+                            <constraint firstItem="35J-KS-I2q" firstAttribute="top" secondItem="8CJ-4Q-Sik" secondAttribute="bottom" constant="20" id="GjY-ab-PHb"/>
+                            <constraint firstItem="AXS-Gc-Dha" firstAttribute="top" secondItem="35J-KS-I2q" secondAttribute="bottom" constant="20" id="H08-ms-giu"/>
+                            <constraint firstItem="AXS-Gc-Dha" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="HYo-nc-By7"/>
+                            <constraint firstAttribute="trailing" secondItem="8CJ-4Q-Sik" secondAttribute="trailing" id="Q3Z-iq-WNP"/>
+                            <constraint firstItem="8CJ-4Q-Sik" firstAttribute="top" secondItem="gMf-Aw-leD" secondAttribute="bottom" id="YTl-Ij-ShF"/>
+                            <constraint firstAttribute="bottom" secondItem="AXS-Gc-Dha" secondAttribute="bottom" constant="220" id="YyI-yI-320"/>
+                            <constraint firstItem="8CJ-4Q-Sik" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="adW-ML-gKb"/>
+                            <constraint firstAttribute="trailing" secondItem="35J-KS-I2q" secondAttribute="trailing" id="cpZ-fl-Er3"/>
+                            <constraint firstItem="gMf-Aw-leD" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="nk1-R5-dfp"/>
+                            <constraint firstAttribute="trailing" secondItem="gMf-Aw-leD" secondAttribute="trailing" id="uKT-As-sVd"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="selectedLabel" destination="vkU-8P-yTl" id="yRj-7A-I9u"/>
+                        <outlet property="slider" destination="AXS-Gc-Dha" id="8kz-yv-x73"/>
+                        <outlet property="textView" destination="gMf-Aw-leD" id="nF7-1q-WjW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="36.431784107946029"/>
         </scene>
     </scenes>
 </document>
