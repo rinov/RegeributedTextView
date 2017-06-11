@@ -1,8 +1,8 @@
 {
   "name": "RegeributedTextView",
   "version": "0.1.0",
-  "summary": "Regular expression based attribute text written in Swift3.",
-  "description": "`RegeributedTextView` is a subclass of `UITextView` and very easy to use attributedText.It provides a fully customizable function using `TextAttribute`",
+  "summary": "RegeributedTextView is a subclass of UITextView that supports fully attribute string based on regular expression  written in Swift3.",
+  "description": "`RegeributedTextView` is a subclass of `UITextView` and very easy to use attribute string.",
   "homepage": "https://github.com/rinov/RegeributedTextView",
   "license": {
     "type": "MIT",
