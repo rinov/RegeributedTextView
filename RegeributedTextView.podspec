@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
   s.name             = 'RegeributedTextView'
-  s.version          = '0.1.0'
-  s.summary          = 'RegeributedTextView is a subclass of UITextView that supports attribute string based on regular expression.'
+  s.version          = '0.1.1'
+  s.summary          = '`RegeributedTextView` is a subclass of `UITextView` and very easy to use attribute string.'
 
   s.description      = <<-DESC
-`RegeributedTextView` is a subclass of `UITextView` and very easy to use attribute string. 
+RegeributedTextView is a subclass of UITextView that supports attribute string based on regular expression. 
                        DESC
 
   s.homepage         = 'https://github.com/rinov/RegeributedTextView'
