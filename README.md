@@ -129,6 +129,8 @@ Swift 3+
 
 Cocoapods: 
 
+`$: pod repo update`
+
 ```ruby
 pod "RegeributedTextView"
 ```
