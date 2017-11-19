@@ -122,8 +122,8 @@ textView.addAttribute(userName, attribute: .bold, applyingIndex: .first)
 | ignoreIndexOf(Int)  | Ignore only specified index                                                |
 
 ## Requirements
-XCode 8+
-Swift 3+
+Swift 4
+XCode 9
 
 ## Installation
 

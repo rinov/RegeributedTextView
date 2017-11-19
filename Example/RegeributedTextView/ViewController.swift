@@ -77,7 +77,8 @@ extension ViewController: RegeributedTextViewDelegate {
 
         // You can get the emmbeded url from values
         if let url = values["URL"] as? String {
-//            UIApplication.shared.openURL(URL(string: url)!)
+            // e.g.
+            // UIApplication.shared.openURL(URL(string: url)!)
         }
    }
 

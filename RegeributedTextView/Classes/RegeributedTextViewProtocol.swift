@@ -10,7 +10,6 @@ import UIKit
 
 // MARK: - UITextViewDelegate
 public protocol RegeributedTextViewDelegate: UITextViewDelegate {
-    
    /*
     * This will call when you select an attributed text.
     * - didSelect text: Tapped attributed text
@@ -27,10 +26,7 @@ public protocol RegeributedTextViewDelegate: UITextViewDelegate {
 
 // For make optional delegate method.
 public extension RegeributedTextViewDelegate {
-    
     func regeributedTextView(_ textView: RegeributedTextView, didSelect text: String, values: [String: Any]) {}
-    
     func regeributedTextViewDidChange(_ textView: RegeributedTextView) {}
-    
 }
 

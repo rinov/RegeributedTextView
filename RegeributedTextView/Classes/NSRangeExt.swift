@@ -7,7 +7,6 @@
 //
 
 extension NSRange {
-    
     // Convert `NSRange` to `Range` by text.
     func range(for str: String) -> Range<String.Index>? {
         guard location != NSNotFound,
@@ -17,5 +16,4 @@ extension NSRange {
             let to = String.Index(toUTF, within: str) else { return nil }
         return from ..< to
     }
-    
 }

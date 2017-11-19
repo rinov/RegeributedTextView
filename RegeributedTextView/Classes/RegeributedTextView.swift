@@ -72,7 +72,6 @@ open class RegeributedTextView: UITextView {
                 return [NSUnderlineColorAttributeName: color]
             }
         }
-        
     }
     
     /*
@@ -116,6 +115,7 @@ open class RegeributedTextView: UITextView {
     *  Default value is `all`. This mean all matched text is applyed the attribute.
     */
     public enum ApplyingIndex {
+        
         // All matched text is applyed.
         case all
         
@@ -148,9 +148,9 @@ open class RegeributedTextView: UITextView {
     
     fileprivate var tapAttributedTextGesture: UITapGestureRecognizer?
     
-    fileprivate var _delegate: RegeributedTextViewDelegate?
+    private var _delegate: RegeributedTextViewDelegate?
     
-    fileprivate var attributedRanges: [AttributedRange] = [] {
+    private var attributedRanges: [AttributedRange] = [] {
         didSet {
             _delegate?.regeributedTextViewDidChange(self)
         }
@@ -269,22 +269,19 @@ open class RegeributedTextView: UITextView {
             let value = attributedText.attribute(at: offset, attributeNames: names) else { return }
         _delegate?.regeributedTextView(self, didSelect: text.substring(with: selectedRange), values: value)
     }
-
 }
 
 // MARK: - UIGestureRecognizerDelegate
 extension RegeributedTextView: UIGestureRecognizerDelegate {
-    
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
 }
 
 // MARK: - Private Extension
-fileprivate extension RegeributedTextView {
+extension RegeributedTextView {
     
-    struct AttributedRange: Equatable {
+    fileprivate struct AttributedRange: Equatable {
         let attributeNames: [String]
         let priority: Priority
         let range: Range<String.Index>
@@ -302,20 +299,20 @@ fileprivate extension RegeributedTextView {
         }
     }
     
-    struct Constants {
+    fileprivate struct Constants {
         enum Meta: String {
             case AttributeKey
             case AttributeName
         }
     }
 
-    func commonInit() {
+    fileprivate func commonInit() {
         tapAttributedTextGesture = UITapGestureRecognizer(target: self, action: #selector(tappedAttributedText(_:)))
         tapAttributedTextGesture?.delegate = self
         addGestureRecognizer(tapAttributedTextGesture!)
     }
     
-    func arranged(_ matches: [Range<String.Index>], orderBy: ApplyingIndex) -> [Range<String.Index>] {
+    fileprivate func arranged(_ matches: [Range<String.Index>], orderBy: ApplyingIndex) -> [Range<String.Index>] {
         switch orderBy {
         case .first:
             return matches.prefixed(1).map { $0 }
@@ -337,17 +334,13 @@ fileprivate extension RegeributedTextView {
             return matches
         }
     }
-
 }
 
-fileprivate extension NSAttributedString {
-    
-    func mutableCopied() -> NSMutableAttributedString? {
+extension NSAttributedString {
+    fileprivate func mutableCopied() -> NSMutableAttributedString? {
         return mutableCopy() as? NSMutableAttributedString
     }
-    
-    func attribute(at offset: Int, attributeNames: [String]) -> [String: Any]? {
+    fileprivate func attribute(at offset: Int, attributeNames: [String]) -> [String: Any]? {
         return attribute(RegeributedTextView.Constants.Meta.AttributeKey.rawValue, at: offset, effectiveRange: nil) as? [String: Any]
     }
-    
 }

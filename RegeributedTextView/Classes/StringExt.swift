@@ -7,7 +7,6 @@
 //
 
 extension String {
-    
     var rangeOfCharacters: Range<String.Index> {
         // The range of self is always succeeded.
         return self.range(of: self)!
@@ -28,5 +27,4 @@ extension String {
             .flatMap{ $0.rangeAt(0).range(for: self) }
         return result ?? []
     }
-    
 }
