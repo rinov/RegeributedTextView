@@ -4,7 +4,7 @@
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
 [![License](https://img.shields.io/badge/LICENSE-MIT-yellow.svg)](https://img.shields.io/badge/LICENSE-MIT-yellow.svg)
 [![Platform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg)](https://img.shields.io/badge/Platform-iOS-lightgrey.svg)
-[![Language](https://img.shields.io/badge/Swift-3-blue.svg)](https://img.shields.io/badge/Swift-3-blue.svg)
+[![Language](https://img.shields.io/badge/Language-Swift4-blue.svg)
 
 `RegeributedTextView` is a subclass of `UITextView` that supports fully attribute string based on regular expression.
 
@@ -63,7 +63,7 @@ textView.addAttribute(.hashTag, attribute: .textColor(.blue)))
 
 ## Link text behavior
 
-In swift 3, The property `linkTextAttributes ` of `UITextView` can designate the link text behavior but it is not possible to coloring a few text separately in the same text.
+In swift 4, The property `linkTextAttributes ` of `UITextView` can designate the link text behavior but it is not possible to coloring a few text separately in the same text.
 In this case, you can use attributes text based on regular expression like this.
 
 e.g. Set text color separately.
@@ -77,7 +77,7 @@ In `RegeributedTextView`, All attributed text can be detected for each word by t
 and you can detect a tap event of link text by `RegeributedTextViewDelegate`.
 The arguments of `values` can embbed any values.
 
-```swift3
+```swift
 func regeributedTextView(_ textView: RegeributedTextView, didSelect text: String, values: [String : Any]) {
     print("Selected word: \(text)")
     if let url = values["Type"] as? String {
@@ -122,7 +122,9 @@ textView.addAttribute(userName, attribute: .bold, applyingIndex: .first)
 | ignoreIndexOf(Int)  | Ignore only specified index                                                |
 
 ## Requirements
+
 Swift 4
+
 XCode 9
 
 ## Installation
@@ -134,6 +136,11 @@ Cocoapods:
 ```ruby
 pod "RegeributedTextView"
 ```
+
+- Swift3.x: `pod "RegeributedTextView" , '~> 1.0.1'`
+
+- Swift4.x: `pod "RegeributedTextView" , '~> 2.0.0'`
+
 and
 
 `$: pod install`
