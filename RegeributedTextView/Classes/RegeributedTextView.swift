@@ -36,40 +36,40 @@ open class RegeributedTextView: UITextView {
         fileprivate func attributedValue(_ currentFont: UIFont?) -> [String: Any] {
             switch self {
             case .backgroundColor(let color):
-                return [NSBackgroundColorAttributeName: color]
+                return [NSAttributedStringKey.backgroundColor.rawValue: color]
             case .bold:
                 guard let font = currentFont else { return [:] }
-                return [NSFontAttributeName: UIFont.boldSystemFont(ofSize: font.pointSize)]
+                return [NSAttributedStringKey.font.rawValue: UIFont.boldSystemFont(ofSize: font.pointSize)]
             case .boldWithFontSize(let size):
-                return [NSFontAttributeName: UIFont.boldSystemFont(ofSize: size)]
+                return [NSAttributedStringKey.font.rawValue: UIFont.boldSystemFont(ofSize: size)]
             case .font(let font):
-                return [NSFontAttributeName: font]
+                return [NSAttributedStringKey.font.rawValue: font]
             case .fontName(let name):
                 guard let current = currentFont,
                     let font = UIFont(name: name, size: current.pointSize) else { return [:] }
-                return [NSFontAttributeName: font]
+                return [NSAttributedStringKey.font.rawValue: font]
             case .fontSize(let size):
                 guard let current = currentFont,
                     let font = UIFont(name: current.fontName, size: size) else { return [:] }
-                return [NSFontAttributeName: font]
+                return [NSAttributedStringKey.font.rawValue: font]
             case .italic(let value):
-                return [NSObliquenessAttributeName: value]
+                return [NSAttributedStringKey.obliqueness.rawValue: value]
             case .linkColor:
-                return [NSForegroundColorAttributeName: UIColor.blue]
+                return [NSAttributedStringKey.foregroundColor.rawValue: UIColor.blue]
             case .shadow(let shadow):
-                return [NSShadowAttributeName: shadow]
+                return [NSAttributedStringKey.shadow.rawValue: shadow]
             case .strikeColor(let color):
-                return [NSStrikethroughColorAttributeName: color]
+                return [NSAttributedStringKey.strikethroughColor.rawValue: color]
             case .strikeWithThickness(let value):
-                return [NSStrikethroughStyleAttributeName: value]
+                return [NSAttributedStringKey.strikethroughStyle.rawValue: value]
             case .strokeWidth(let value):
-                return [NSStrokeWidthAttributeName: value]
+                return [NSAttributedStringKey.strokeWidth.rawValue: value]
             case .textColor(let color):
-                return [NSForegroundColorAttributeName: color]
+                return [NSAttributedStringKey.foregroundColor.rawValue: color]
             case .underline(let style):
-                return [NSUnderlineStyleAttributeName: style.value]
+                return [NSAttributedStringKey.underlineStyle.rawValue: style.value]
             case .underlineColor(let color):
-                return [NSUnderlineColorAttributeName: color]
+                return [NSAttributedStringKey.underlineColor.rawValue: color]
             }
         }
     }
@@ -144,6 +144,8 @@ open class RegeributedTextView: UITextView {
         case ignoreIndexOf(Int)
     }
     
+    public var attributes: [String: Any] = [:]
+
     // MARK: - Private Properties
     
     fileprivate var tapAttributedTextGesture: UITapGestureRecognizer?
@@ -187,27 +189,47 @@ open class RegeributedTextView: UITextView {
     * - applyingIndex: An applying element that you can specify.
     */
     public func addAttribute(_ regexString: String, attribute: TextAttribute, values: [String: Any] = [:], priority: Priority = .medium, applyingIndex: ApplyingIndex = .all) {
+        
+        // Get a range based on regular expression.
         let matched = text.matched(by: regexString)
+        
+        // Return if there are no matched word or failed to copy attributed text.
         guard !matched.isEmpty,
             let attributedString = attributedText.mutableCopied() else { return }
-        arranged(matched, orderBy: applyingIndex).forEach { range in
-            let overlapedAttributes = attributedRanges.enumerated().filter { $0.element.range.overlaps(range) }
-            // Remove overlaped text attribute if the current attribute priority is less or equal than `priority`.
-            overlapedAttributes
-                .filter { $0.element.priority < priority }
-                .forEach { attribute in
-                    attribute.element.attributeNames.forEach {
-                        attributedString.removeAttribute($0, range: text.nsRange(from: attribute.element.range))
-                    }
-                    attributedRanges.remove(at: attribute.offset)
-            }
-            let higherAttributes = overlapedAttributes.filter { $0.element.priority > priority }
-            if higherAttributes.isEmpty {
-                var attribute = attribute.attributedValue(font)
-                attribute[Constants.Meta.AttributeKey.rawValue] = values
-                attributedString.addAttributes(attribute, range: text.nsRange(from: range))
-                attributedRanges.append(AttributedRange(attributeNames: attribute.keys.map{ String($0) }, priority: priority, range: range))
-            }
+        
+        arranged(matched, orderBy: applyingIndex)
+            .forEach { range in
+                
+                // Check overlaps of attributed range.
+                let overlapedAttributes = attributedRanges
+                    .enumerated()
+                    .filter { $0.element.range.overlaps(range) }
+                
+                // Remove overlaped text attribute if the current attribute priority is less or equal than `priority`.
+                overlapedAttributes
+                    .filter { $0.element.priority < priority }
+                    .forEach { attribute in
+                        attribute.element.attributeNames
+                            .forEach {
+                                attributedString.removeAttribute(NSAttributedStringKey(rawValue: $0), range: text.nsRange(from: attribute.element.range))
+                            }
+                        attributedRanges.remove(at: attribute.offset)
+                }
+                
+                let shouldAddAttribute = overlapedAttributes
+                    .filter { $0.element.priority > priority }
+                    .isEmpty
+                let regeributedDelegate = delegate as? RegeributedTextViewDelegate
+                if shouldAddAttribute && regeributedDelegate?.interceptAttributing(matchedRanges: matched) ?? true {
+                    var attribute = attribute.attributedValue(font)
+                    attribute[Constants.Meta.AttributeKey.rawValue] = values
+                    attributes.merge(values, uniquingKeysWith: { old, new -> Any in
+                        return new
+                    })
+                    let addedAttribute = Dictionary(uniqueKeysWithValues: attribute.lazy.map { (NSAttributedStringKey($0.key), $0.value) })
+                    attributedString.addAttributes(addedAttribute, range: text.nsRange(from: range))
+                    attributedRanges.append(AttributedRange(attributeNames: attribute.keys.map{ String($0) }, priority: priority, range: range))
+                }
         }
         attributedText = attributedString
     }
@@ -234,32 +256,45 @@ open class RegeributedTextView: UITextView {
     public func removeAttributes(_ regexString: RegexStringConvertible) {
         let matched = text.matched(by: regexString.string)
         guard let attributedString = attributedText.mutableCopied() else { return }
-        attributedRanges.enumerated()
+        attributes.removeValue(forKey: regexString.string)
+        attributedRanges
+            .enumerated()
             .filter { attribute in
                 let overlaped = matched.filter { $0.overlaps(attribute.element.range) }
                 return !overlaped.isEmpty
             }
             .forEach {
                 let range = text.nsRange(from: $0.element.range)
-                $0.element.attributeNames.forEach { attributedString.removeAttribute($0, range: range) }
+                $0.element.attributeNames.forEach {
+                    attributedString.removeAttribute(NSAttributedStringKey(rawValue: $0), range: range)
+                }
                 attributedRanges.remove(at: $0.offset)
-        }
+            }
         attributedText = attributedString
+    }
+    
+    // Remove attribute from key.
+    public func removeAttribute(key: String) {
+        guard attributes.contains(where: { $0.key == key }) else { return }
+        removeAttributes(key)
     }
     
     // Remove all attirbutes and update the text appearance.
     public func removeAllAttribute() {
         guard let attributedString = attributedText.mutableCopied() else { return }
-        attributedRanges.forEach { attribute in
-            attribute.attributeNames.forEach {
-                attributedString.removeAttribute($0, range: text.nsRange(from: attribute.range))
-            }
+        attributedRanges
+            .forEach { attribute in
+                attribute.attributeNames
+                    .forEach {
+                        attributedString.removeAttribute(NSAttributedStringKey(rawValue: $0), range: text.nsRange(from: attribute.range))
+                    }
         }
         attributedText = attributedString
+        attributes.removeAll()
         attributedRanges.removeAll()
     }
     
-    public func tappedAttributedText(_ sender: UITapGestureRecognizer) {
+    @objc public func tappedAttributedText(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: self)
         guard let index = closestPosition(to: location) else { return }
         let offset = self.offset(from: beginningOfDocument, to: index)
@@ -341,6 +376,6 @@ extension NSAttributedString {
         return mutableCopy() as? NSMutableAttributedString
     }
     fileprivate func attribute(at offset: Int, attributeNames: [String]) -> [String: Any]? {
-        return attribute(RegeributedTextView.Constants.Meta.AttributeKey.rawValue, at: offset, effectiveRange: nil) as? [String: Any]
+        return attribute(NSAttributedStringKey(rawValue: RegeributedTextView.Constants.Meta.AttributeKey.rawValue), at: offset, effectiveRange: nil) as? [String: Any]
     }
 }

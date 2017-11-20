@@ -14,8 +14,8 @@ extension String {
     
     // Convert `Range` to `NSRange`
     func nsRange(from range: Range<String.Index>) -> NSRange {
-        let from = range.lowerBound.samePosition(in: utf16)
-        let to = range.upperBound.samePosition(in: utf16)
+        guard let from = range.lowerBound.samePosition(in: utf16),
+            let to = range.upperBound.samePosition(in: utf16) else { return NSRange() }
         return NSRange(location: utf16.distance(from: utf16.startIndex, to: from),
                        length: utf16.distance(from: from, to: to))
     }
@@ -23,8 +23,8 @@ extension String {
     // Returns matched range list by regular expression.
     func matched(by regex: String) -> [Range<String.Index>] {
         let result = try? NSRegularExpression(pattern: regex, options: [])
-            .matches(in: self, options: [], range: NSRange(location: 0, length: self.characters.count))
-            .flatMap{ $0.rangeAt(0).range(for: self) }
+            .matches(in: self, options: [], range: NSRange(location: 0, length: self.count))
+            .flatMap{ $0.range(at: 0).range(for: self) }
         return result ?? []
     }
 }

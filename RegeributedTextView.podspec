@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'RegeributedTextView'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = '`RegeributedTextView` is a subclass of `UITextView` and very easy to use attribute string.'
 
   s.description      = <<-DESC

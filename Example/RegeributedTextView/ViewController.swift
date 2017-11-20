@@ -61,7 +61,7 @@ class ViewController: UIViewController {
         textView.addAttribute("Hello", attribute: .italic(1.2))
     }
 
-    func didSlide(_ sender: UISlider) {
+    @objc func didSlide(_ sender: UISlider) {
         let value = CGFloat(slider.value + 1.0)
         let currentFontSize = textView.font!.pointSize
         textView.addAttribute("[#@]", attribute: .fontSize(currentFontSize * value))

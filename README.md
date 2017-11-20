@@ -137,9 +137,9 @@ Cocoapods:
 pod "RegeributedTextView"
 ```
 
-- Swift3.x: `pod "RegeributedTextView" , '~> 1.0.1'`
+- Swift3.x: `pod "RegeributedTextView" , '~> 0.1.1'`
 
-- Swift4.x: `pod "RegeributedTextView" , '~> 2.0.0'`
+- Swift4.x: `pod "RegeributedTextView" , '~> 0.2.1'`
 
 and
 

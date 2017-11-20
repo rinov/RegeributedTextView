@@ -42,7 +42,7 @@ class RegeributedTextViewSpec: QuickSpec {
                     expect(tv.text).to(equal("abcde1234 @mention #hash $unknown¥^-[@]:;_/.,!#$%&'()0'=~|{`}*+_?><"))
                 }
                 it("is same characters count") {
-                    expect(tv.text.characters.count).to(equal("abcde1234 @mention #hash $unknown¥^-[@]:;_/.,!#$%&'()0'=~|{`}*+_?><".characters.count))
+                    expect(tv.text.count).to(equal("abcde1234 @mention #hash $unknown¥^-[@]:;_/.,!#$%&'()0'=~|{`}*+_?><".count))
                 }
             }
             describe("RegexStringType.mention") {
@@ -53,11 +53,11 @@ class RegeributedTextViewSpec: QuickSpec {
                 }
                 it("hasn't text color attribute") {
                     let attr = tv.attributedText.attributes(at: 9, effectiveRange: nil)
-                    expect(attr[NSForegroundColorAttributeName] as? UIColor).to(beNil())
+                    expect(attr[.foregroundColor] as? UIColor).to(beNil())
                 }
                 it("has text color attribute") {
                     let attr = tv.attributedText.attributes(at: 13, effectiveRange: nil)
-                    expect(attr[NSForegroundColorAttributeName] as? UIColor).toNot(beNil())
+                    expect(attr[.foregroundColor] as? UIColor).toNot(beNil())
                 }
             }
             describe("RegexStringType.hashTag") {
@@ -68,12 +68,12 @@ class RegeributedTextViewSpec: QuickSpec {
                 }
                 it("hasn't text color attribute") {
                     let attr = tv.attributedText.attributes(at: 18, effectiveRange: nil)
-                    expect(attr[NSForegroundColorAttributeName] as? UIColor).to(beNil())
+                    expect(attr[.foregroundColor] as? UIColor).to(beNil())
                 }
 
                 it("has text color attribute") {
                     let attr = tv.attributedText.attributes(at: 19, effectiveRange: nil)
-                    expect(attr[NSBackgroundColorAttributeName] as? UIColor).to(equal(UIColor.blue))
+                    expect(attr[.backgroundColor] as? UIColor).to(equal(UIColor.blue))
                 }
             }
             describe("Emmbeded values") {
@@ -86,28 +86,41 @@ class RegeributedTextViewSpec: QuickSpec {
                     tv.addAttribute("abcde", attribute: .textColor(.green), values: ["Int": emmbededInt, "Double": emmbededDouble, "String": emmbededString, "Float": emmbededFloat, "Bool": emmbededBool])
                 }
                 it("has five keys") {
-                    let keys = tv.attributedText.attributes(at: 0, effectiveRange: nil)["AttributeKey"] as? [String: Any]
-                    expect(keys?.keys.count).to(equal(5))
+                    expect(tv.attributes.count).to(equal(5))
                 }
                 it("can get int value") {
-                    let keys = tv.attributedText.attributes(at: 0, effectiveRange: nil)["AttributeKey"] as? [String: Any]
-                    expect(keys?["Int"] as? Int).toNot(beNil())
+                    expect(tv.attributes["Int"] as? Int) == 1001
                 }
                 it("can get double value") {
-                    let keys = tv.attributedText.attributes(at: 0, effectiveRange: nil)["AttributeKey"] as? [String: Any]
-                    expect(keys?["Double"] as? Double).toNot(beNil())
+                    expect(tv.attributes["Double"] as? Double) == 0.1001
                 }
                 it("can get string value") {
-                    let keys = tv.attributedText.attributes(at: 0, effectiveRange: nil)["AttributeKey"] as? [String: Any]
-                    expect(keys?["String"] as? String).toNot(beNil())
+                    expect(tv.attributes["String"] as? String) == "1001"
                 }
                 it("can get float value") {
-                    let keys = tv.attributedText.attributes(at: 0, effectiveRange: nil)["AttributeKey"] as? [String: Any]
-                    expect(keys?["Float"] as? Float).toNot(beNil())
+                    expect(tv.attributes["Float"] as? Float) == 0.1001
                 }
                 it("can get bool value") {
-                    let keys = tv.attributedText.attributes(at: 0, effectiveRange: nil)["AttributeKey"] as? [String: Any]
-                    expect(keys?["Bool"] as? Bool).toNot(beNil())
+                    expect(tv.attributes["Bool"] as? Bool) == true
+                }
+            }
+            describe("Remove attributes") {
+                beforeEach {
+                    tv.removeAllAttribute()
+                    let emmbededInt: Int = 1001
+                    let emmbededString: String = "2002"
+                    tv.addAttribute("abcde", attribute: .textColor(.red), values: ["Int": emmbededInt, "String": emmbededString])
+                }
+                it("has two keys") {
+                    expect(tv.attributes.count).to(equal(2))
+                }
+                context("Remove Int key") {
+                    beforeEach {
+                        tv.removeAttribute(key: "Int")
+                    }
+                    it("has one key") {
+                        expect(tv.attributes.count).to(equal(1))
+                    }
                 }
             }
         }
