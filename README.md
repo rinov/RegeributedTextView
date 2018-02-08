@@ -1,5 +1,6 @@
 # RegeributedTextView
 [![Build Status](https://www.bitrise.io/app/734bd7a1b4b13c20/status.svg?token=azRrRGbppYpw5SWMyCMP_w&branch=master)](https://www.bitrise.io/app/734bd7a1b4b13c20)
+[![codecov](https://codecov.io/gh/rinov/RegeributedTextView/branch/master/graph/badge.svg)](https://codecov.io/gh/rinov/RegeributedTextView)
 [![Cocoapods](https://img.shields.io/badge/Cocoapods-compatible-brightgreen.svg)](https://img.shields.io/badge/Cocoapods-compatible-brightgreen.svg)
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
 [![License](https://img.shields.io/badge/LICENSE-MIT-yellow.svg)](https://img.shields.io/badge/LICENSE-MIT-yellow.svg)
