@@ -150,7 +150,7 @@ open class RegeributedTextView: UITextView {
     
     fileprivate var tapAttributedTextGesture: UITapGestureRecognizer?
     
-    private var _delegate: RegeributedTextViewDelegate?
+    private weak var _delegate: RegeributedTextViewDelegate?
     
     private var attributedRanges: [AttributedRange] = [] {
         didSet {
