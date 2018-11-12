@@ -23,7 +23,7 @@ extension String {
     // Returns matched range list by regular expression.
     func matched(by regex: String) -> [Range<String.Index>] {
         let result = try? NSRegularExpression(pattern: regex, options: [])
-            .matches(in: self, options: [], range: NSRange(location: 0, length: self.count))
+            .matches(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count))
             .flatMap{ $0.range(at: 0).range(for: self) }
         return result ?? []
     }
